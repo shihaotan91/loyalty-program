@@ -2,6 +2,7 @@ class Transaction < ApplicationRecord
   belongs_to :user
 
   before_create :calculate_leftover_spent
+  after_create :update_user_monthly_points
 
   POINTS_REWARD = {
     spent_required: 10000,
@@ -17,8 +18,16 @@ class Transaction < ApplicationRecord
     self.leftover_spent_in_cents = total_spent_in_cents % POINTS_REWARD[:spent_required]
   end
 
-  def calculate_points_earned
-    (total_spent_in_cents % POINTS_REWARD[:spent_required]).floor * POINTS_REWARD[:points_earned]
-    # add code to assign user current monthly points with points
+  def update_user_monthly_points
+    total_points_earned = (total_spent_in_cents / POINTS_REWARD[:spent_required]).floor * POINTS_REWARD[:points_earned]
+    total_points_earned *= 2 if overseas?
+
+    return if total_points_earned.zero?
+
+    user.current_monthly_point.update_points(total_points_earned)
+  end
+
+  def overseas?
+    user.country != country
   end
 end

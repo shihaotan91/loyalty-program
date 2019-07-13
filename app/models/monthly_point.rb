@@ -10,4 +10,9 @@ class MonthlyPoint < ApplicationRecord
     self.start_date = today.beginning_of_month
     self.end_date = today.end_of_month.end_of_day
   end
+
+  def update_points(earned_points)
+    self.points += earned_points
+    self.save
+  end
 end
