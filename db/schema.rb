@@ -49,7 +49,9 @@ ActiveRecord::Schema.define(version: 2019_07_13_152233) do
     t.string "encrypted_password", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "loyalty_tier_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["loyalty_tier_id"], name: "index_users_on_loyalty_tier_id"
   end
 
 end
