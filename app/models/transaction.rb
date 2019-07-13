@@ -1,8 +1,10 @@
 class Transaction < ApplicationRecord
+  belongs_to :user
+
   before_create :calculate_leftover_spent
 
   POINTS_REWARD = {
-    money_spent_in_cents: 10000,
+    spent_required: 10000,
     points_earned: 10
   }.freeze
 
@@ -12,11 +14,11 @@ class Transaction < ApplicationRecord
   validates_numericality_of :total_spent_in_cents, allow_nil: false
 
   def calculate_leftover_spent
-    self.leftover_spent_in_cents = total_spent_in_cents % POINTS_REWARD[:money_spent_in_cents]
+    self.leftover_spent_in_cents = total_spent_in_cents % POINTS_REWARD[:spent_required]
   end
 
   def calculate_points_earned
-    (total_spent_in_cents % POINTS_REWARD[:money_spent_in_cents]).floor * POINTS_REWARD[:points_earned]
+    (total_spent_in_cents % POINTS_REWARD[:spent_required]).floor * POINTS_REWARD[:points_earned]
     # add code to assign user current monthly points with points
   end
 end
