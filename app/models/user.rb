@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   has_many :monthly_point
 
-  after_create :create_monthly_points
+  after_create :create_monthly_point
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
   validates_inclusion_of :country, in: Country.all
 
-  def create_monthly_points
+  def create_monthly_point
     ::MonthlyPoint.create!(user_id: id)
   end
 end
