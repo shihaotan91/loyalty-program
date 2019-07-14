@@ -30,4 +30,14 @@ class User < ApplicationRecord
   def current_monthly_point
     monthly_points.find_by(start_date: Date.today.beginning_of_month)
   end
+
+  def current_year_points
+    monthly_points.this_year.pluck(:points).sum
+  end
+
+  def upgrade_loyalty_tier(tier)
+    qualified_tier = LoyaltyTier.find_by(name: tier)
+    self.loyalty_tier = qualified_tier
+    self.save
+  end
 end
