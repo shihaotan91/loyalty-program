@@ -22,3 +22,7 @@
 every 1.month, at: 'start of the month at 12am' do
   rake "monthly_task:create_monthly_point"
 end
+
+every 1.year, at: 'start of the year at 12am' do
+  rake "yearly_task:reset_loyalty_tier"
+end

@@ -32,12 +32,23 @@ class User < ApplicationRecord
   end
 
   def current_year_points
-    monthly_points.this_year.pluck(:points).sum
+    date = Date.today
+    monthly_points.for_year(date).pluck(:points).sum
   end
 
-  def upgrade_loyalty_tier(tier)
-    qualified_tier = LoyaltyTier.find_by(name: tier)
-    self.loyalty_tier = qualified_tier
-    self.save
+  def upgrade_loyalty_tier(points=current_year_points)
+    ::LoyaltyTier::POINTS_NEEDED.keys.each do |tier|
+      if can_upgrade_loyalty_tier(tier, points)
+        qualified_tier = LoyaltyTier.find_by(name: tier)
+        self.loyalty_tier = qualified_tier
+        self.save
+        break
+      end
+    end
+  end
+
+  def can_upgrade_loyalty_tier(tier, points)
+    points >= ::LoyaltyTier::POINTS_NEEDED[tier] &&
+      loyalty_tier.name != tier
   end
 end
