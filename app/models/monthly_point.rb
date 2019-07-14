@@ -1,6 +1,7 @@
 class MonthlyPoint < ApplicationRecord
   belongs_to :user
 
+  after_save :claim_reward
   before_validation :generate_start_and_end_dates, on: :create
 
   validates :user_id, uniqueness: { scope: %i[start_date end_date] }
@@ -14,5 +15,9 @@ class MonthlyPoint < ApplicationRecord
   def update_points(earned_points)
     self.points += earned_points
     self.save
+  end
+
+  def claim_reward
+    ::RewardTrigger::ByPoints.new(self)
   end
 end
