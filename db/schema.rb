@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_14_043440) do
+ActiveRecord::Schema.define(version: 2019_07_14_060938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "leftover_spendings", force: :cascade do |t|
+    t.bigint "user_id"
+    t.integer "local_spent_in_cents", default: 0
+    t.integer "overseas_spent_in_cents", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_leftover_spendings_on_user_id"
+  end
 
   create_table "loyalty_tiers", force: :cascade do |t|
     t.integer "points_required"
@@ -41,7 +50,6 @@ ActiveRecord::Schema.define(version: 2019_07_14_043440) do
 
   create_table "transactions", force: :cascade do |t|
     t.bigint "user_id"
-    t.integer "leftover_spent_in_cents"
     t.integer "total_spent_in_cents"
     t.string "country"
     t.datetime "created_at", null: false
