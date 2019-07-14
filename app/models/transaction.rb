@@ -1,15 +1,22 @@
 class Transaction < ApplicationRecord
   belongs_to :user
 
-  after_create :update_user_monthly_points, :calculate_leftover_spent
-
+  after_save :update_monthtly_points_and_leftover_spend
   belongs_to :user
 
   validates_inclusion_of :country, in: Country.all
   validates_numericality_of :total_spent_in_cents, allow_nil: false
 
-  def calculate_leftover_spent
+  def update_monthtly_points_and_leftover_spend
+    ActiveRecord::Base.transaction do
+      update_user_monthly_points
+      update_user_leftover_spending
+    end
+  end
+
+  def update_user_leftover_spending
     leftover_spent_in_cents = CalculatePoints.leftover_spent(total_spent_in_cents)
+    puts leftover_spent_in_cents
     return unless leftover_spent_in_cents.positive?
 
     if overseas?
@@ -18,7 +25,7 @@ class Transaction < ApplicationRecord
       user.leftover_spending.local_spent_in_cents += leftover_spent_in_cents
     end
 
-    user.leftover_spending.save
+    user.leftover_spending.update_monthly_points_and_leftover_spend
   end
 
   def update_user_monthly_points
