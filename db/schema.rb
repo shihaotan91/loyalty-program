@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_14_041446) do
+ActiveRecord::Schema.define(version: 2019_07_14_043440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,17 @@ ActiveRecord::Schema.define(version: 2019_07_14_041446) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_transactions_on_user_id"
+  end
+
+  create_table "user_rewards", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "reward_id"
+    t.string "identifier"
+    t.boolean "redeemed", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reward_id"], name: "index_user_rewards_on_reward_id"
+    t.index ["user_id"], name: "index_user_rewards_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

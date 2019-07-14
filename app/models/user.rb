@@ -1,5 +1,8 @@
 class User < ApplicationRecord
   has_many :monthly_points
+  has_many :user_rewards
+  has_many :rewards, through: :user_rewards, source: :reward
+
   belongs_to :loyalty_tier
 
   before_validation :set_standard_loyalty_tier, on: :create
