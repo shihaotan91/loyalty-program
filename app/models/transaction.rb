@@ -5,6 +5,10 @@ class Transaction < ApplicationRecord
   validates_inclusion_of :country, in: Country.all
   validates_numericality_of :total_spent_in_cents, allow_nil: false
 
+  scope :for_date_range, lambda { |start_date, end_date|
+    where(created_at: start_date..end_date)
+  }
+
   def update_monthtly_points_and_leftover_spend
     ActiveRecord::Base.transaction do
       update_user_monthly_points
@@ -14,7 +18,6 @@ class Transaction < ApplicationRecord
 
   def update_user_leftover_spending
     leftover_spent_in_cents = CalculatePoints.leftover_spent(total_spent_in_cents)
-    puts leftover_spent_in_cents
     return unless leftover_spent_in_cents.positive?
 
     if overseas?
@@ -39,6 +42,6 @@ class Transaction < ApplicationRecord
   end
 
   def claim_reward
-    ::RewardTrigger::ByTransactions.new(user)
+    ::RewardTrigger::ByTransactions.new(user, self)
   end
 end
