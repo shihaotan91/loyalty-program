@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_many :monthly_points
+  has_many :transactions
   has_many :user_rewards
   has_many :rewards, through: :user_rewards, source: :reward
   has_one :leftover_spending
