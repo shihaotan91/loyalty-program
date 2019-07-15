@@ -14,8 +14,10 @@ module RewardTrigger
     def give_free_monthly_coffee
       return unless @points >= 100
 
-      reward = Reward.find_by(name: "Monthly Free Coffee")
-      this_month_coffee = @user.user_rewards.this_month.find_by(reward_id: reward.id)
+      free_coffee_reward = Reward.find_by(name: "Monthly Free Coffee")
+      return if free_coffee_reward.nil?
+
+      this_month_coffee = @user.user_rewards.this_month.find_by(reward_id: free_coffee_reward.id)
 
       return if this_month_coffee
       UserReward.create!(user_id: @user.id, reward_id: reward.id)

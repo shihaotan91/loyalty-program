@@ -15,7 +15,7 @@ module RewardTrigger
 
     def give_cash_rebate
       cash_rebate_reward = Reward.find_by(name: "5% Cash Rebate")
-      return if @user.rewards.find_by(id: cash_rebate_reward.id)
+      return if cash_rebate_reward.nil? || @user.rewards.find_by(id: cash_rebate_reward.id)
 
       return unless number_of_transactions_with_amount_spent(10000) >= 10
 
@@ -24,7 +24,7 @@ module RewardTrigger
 
     def give_movie_tickets
       movie_ticket_reward = Reward.find_by(name: "Free Movie Ticket")
-      return if @user.rewards.find_by(id: movie_ticket_reward.id)
+      return if movie_ticket_reward.nil? || @user.rewards.find_by(id: movie_ticket_reward.id)
 
       first_transaction_date = @transactions.order(:created_at).first.created_at.to_date
       return if days_since_date(first_transaction_date) > 60
@@ -36,7 +36,7 @@ module RewardTrigger
 
       UserReward.create!(user_id: @user.id, reward_id: movie_ticket_reward.id)
     end
-
+    
     def number_of_transactions_with_amount_spent(amount)
       spendings = @transactions.pluck(:total_spent_in_cents)
       spendings.select { |spent| spent > amount }.count

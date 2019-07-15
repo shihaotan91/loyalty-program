@@ -40,10 +40,11 @@ gem 'devise'
 gem 'pg'
 gem 'countries'
 gem 'whenever'
-gem "shoulda-whenever"
 
 gem 'rspec-rails', '~> 3.8'
 gem "factory_bot_rails"
+gem "faker"
+gem "shoulda-matchers"
 
 gem 'timecop'
 

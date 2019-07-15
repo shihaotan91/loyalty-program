@@ -7,6 +7,8 @@ class User < ApplicationRecord
 
   belongs_to :loyalty_tier
 
+  after_save :claim_reward, if: :saved_change_to_loyalty_tier_id?
+
   before_validation :set_standard_loyalty_tier, on: :create
   after_create :create_monthly_point, :create_leftover_spending
   # Include default devise modules. Others available are:
@@ -15,6 +17,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   validates_inclusion_of :country, in: Country.all
+  validates_presence_of :name, :email
 
   def set_standard_loyalty_tier
     self.loyalty_tier = LoyaltyTier.find_by(name: "Standard")
@@ -41,11 +44,16 @@ class User < ApplicationRecord
     ::LoyaltyTier::POINTS_NEEDED.keys.each do |tier|
       if can_upgrade_loyalty_tier(tier, points)
         qualified_tier = LoyaltyTier.find_by(name: tier)
+        next unless qualified_tier
         self.loyalty_tier = qualified_tier
         self.save
         break
       end
     end
+  end
+
+  def claim_reward
+    ::RewardTrigger::ByLoyaltyTier.new(self)
   end
 
   def can_upgrade_loyalty_tier(tier, points)
