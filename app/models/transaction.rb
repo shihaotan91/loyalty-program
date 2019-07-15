@@ -1,8 +1,6 @@
 class Transaction < ApplicationRecord
   belongs_to :user
-
   after_save :update_monthtly_points_and_leftover_spend
-  belongs_to :user
 
   validates_inclusion_of :country, in: Country.all
   validates_numericality_of :total_spent_in_cents, allow_nil: false
