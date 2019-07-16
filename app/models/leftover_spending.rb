@@ -1,6 +1,9 @@
 class LeftoverSpending < ApplicationRecord
   belongs_to :user
 
+  validates_numericality_of :overseas_spent_in_cents, allow_nil: false
+  validates_numericality_of :local_spent_in_cents, allow_nil: false
+
   def update_monthly_points_and_leftover_spend
     ActiveRecord::Base.transaction do
       update_user_monthly_points

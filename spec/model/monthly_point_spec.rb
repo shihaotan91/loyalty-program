@@ -5,6 +5,10 @@ describe MonthlyPoint do
     it { is_expected.to belong_to(:user) }
   end
 
+  describe "validations" do
+    it { is_expected.to validate_numericality_of(:points) }
+  end
+
   describe "instance methods" do
     let(:monthly_point) { create :monthly_point, points: 100}
     let(:user) { monthly_point.user }

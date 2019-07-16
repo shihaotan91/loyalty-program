@@ -4,6 +4,7 @@ class MonthlyPoint < ApplicationRecord
   after_save :claim_reward, :upgrade_user_loyalty_tier
   before_validation :generate_start_and_end_dates, on: :create
 
+  validates_numericality_of :points, allow_nil: false
   # validates_uniqueness_of :user_id, scope: %i[start_date end_date]
 
   scope :for_year, lambda { |date|
