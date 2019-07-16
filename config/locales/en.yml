@@ -30,4 +30,29 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  loyalty_tier:
+    name:
+      standard: "Standard"
+      gold: "Gold"
+      platinum: "Platinum"
+    points:
+      standard: 0
+      gold: 1000
+      platinum: 5000
+  rewards:
+    name:
+      coffee: "Monthly Free Coffee"
+      cash_rebate: "5% Cash Rebate"
+      movie_ticket: "Free Movie Ticket"
+      airport_access: "4x Airport Lounge Access"
+    points: 
+      coffee: 100
+    spent_in_cents:
+      cash_rebate: 10000
+      movie_ticket: 100000
+    days:
+      movie_ticket: 60
+    transaction_count:
+      cash_rebate: 10    
+
+

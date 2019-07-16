@@ -27,7 +27,9 @@ class MonthlyPoint < ApplicationRecord
   end
 
   def upgrade_user_loyalty_tier
-    return if user.current_year_points < 1000 || user.loyalty_tier.name == "Platinum"
+    gold_points = I18n.t("loyalty_tier.points.gold")
+    platinum = I18n.t("loyalty_tier.name.platinum")
+    return if user.current_year_points < gold_points || user.loyalty_tier.name == platinum
 
     user.upgrade_loyalty_tier
   end

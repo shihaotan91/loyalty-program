@@ -1,6 +1,5 @@
 REWARDS_DATA = [
   { name: "Monthly Free Coffee", criteria: "Accumulate 100 points in one calendar month" },
-  { name: "Birthday Free Coffee", criteria: "Received automatically during your birthday month" },
   { name: "5% Cash Rebate", criteria: "Have 10 or more transactions that have an amount > $100 " },
   { name: "Free Movie Ticket", criteria: "Spend > $1000 within 60 days of their first transaction" },
   { name: "4x Airport Lounge Access", criteria: "Become a gold tier customer" }
