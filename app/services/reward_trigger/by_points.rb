@@ -20,7 +20,7 @@ module RewardTrigger
       this_month_coffee = @user.user_rewards.this_month.find_by(reward_id: free_coffee_reward.id)
 
       return if this_month_coffee
-      UserReward.create!(user_id: @user.id, reward_id: reward.id)
+      UserReward.create!(user_id: @user.id, reward_id: free_coffee_reward.id)
     end
   end
 end
