@@ -6,7 +6,7 @@ describe RewardTrigger::ByPoints do
   let!(:monthly_point) { user.monthly_points[0] }
   let!(:reward) { create :reward, name: "Monthly Free Coffee" }
 
-  describe "give monthly free Ccffee" do
+  describe "give monthly free coffee" do
     describe "when user has not claimed monthly coffee reward" do
       it "creates a new coffee reward for user with 100 or more monthly points" do
         monthly_point.points = 200
