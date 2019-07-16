@@ -11,20 +11,20 @@ class User < ApplicationRecord
 
   before_validation :set_standard_loyalty_tier, on: :create
   after_create :create_monthly_point, :create_leftover_spending
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+
+  devise :database_authenticatable, :registerable, :validatable
 
   validates_inclusion_of :country, in: Country.all
   validates_presence_of :name, :email
 
   def set_standard_loyalty_tier
-    self.loyalty_tier = LoyaltyTier.find_by(name: "Standard")
+    self.loyalty_tier = LoyaltyTier.find_by(name: I18n.t("loyalty_tier.name.standard"))
   end
 
   def create_monthly_point
-    MonthlyPoint.create!(user_id: id)
+    month_start = Date.today.beginning_of_month
+    month_end = Date.today.end_of_month.end_of_day
+    MonthlyPoint.create!(user_id: id, start_date: month_start, end_date: month_end)
   end
 
   def create_leftover_spending

@@ -7,16 +7,19 @@ describe MonthlyPoint do
 
   describe "validations" do
     it { is_expected.to validate_numericality_of(:points) }
+    it { is_expected.to validate_presence_of(:start_date) }
+    it { is_expected.to validate_presence_of(:end_date) }
+    it { is_expected.to validate_uniqueness_of(:user_id).scoped_to %i[start_date end_date] }
   end
 
   describe "instance methods" do
-    let(:monthly_point) { create :monthly_point, points: 100}
-    let(:user) { monthly_point.user }
+    let(:user) { create :user }
+    let(:monthly_point) { user.monthly_points[0] }
 
     describe "update points" do
       it "updates the points" do
         monthly_point.update_points(500)
-        expect(monthly_point.points).to eq 600
+        expect(monthly_point.points).to eq 500
       end
     end
 
