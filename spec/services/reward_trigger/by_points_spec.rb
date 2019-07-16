@@ -25,7 +25,9 @@ describe RewardTrigger::ByPoints do
     end
 
     describe "when user has claimed monthly coffee reward" do
-      let!(:coffee_reward) { create :user_reward, user_id: user.id, reward_id: reward.id }
+      before do 
+        create :user_reward, user_id: user.id, reward_id: reward.id
+      end
 
       it "does nothing when user has already claimed a reward for that month" do
         expect(user.rewards.count).to eq 1

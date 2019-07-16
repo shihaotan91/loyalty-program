@@ -25,7 +25,9 @@ describe RewardTrigger::ByLoyaltyTier do
     end
 
     describe "when user has claimed airport lounge access reward" do
-      let!(:airport_reward) { create :user_reward, user_id: user.id, reward_id: reward.id }
+      before do
+        create :user_reward, user_id: user.id, reward_id: reward.id
+      end
 
       it "does nothing when user has already claimed that reward" do
         expect(user.rewards.count).to eq 1

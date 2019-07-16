@@ -1,6 +1,6 @@
 module RewardTrigger
   class ByTransactions
-    def initialize(user, transaction)
+    def initialize(user, transaction=nil)
       @user = user
       @transactions = user.transactions
       @current_transaction = transaction
@@ -32,6 +32,7 @@ module RewardTrigger
       transactions_in_60_days = @transactions.for_date_range(
         first_transaction_date, @current_transaction.created_at.to_date
       )
+
       return if transactions_in_60_days.pluck(:total_spent_in_cents).sum < 100000
 
       UserReward.create!(user_id: @user.id, reward_id: movie_ticket_reward.id)
