@@ -2,12 +2,12 @@ require "rails_helper"
 
 describe User do
   describe "associations" do
-    it { is_expected.to have_many(:monthly_points) }
-    it { is_expected.to have_many(:transactions) }
-    it { is_expected.to have_many(:user_rewards) }
+    it { is_expected.to have_many(:monthly_points).dependent(:destroy) }
+    it { is_expected.to have_many(:transactions).dependent(:destroy) }
+    it { is_expected.to have_many(:user_rewards).dependent(:destroy) }
     it { is_expected.to have_many(:rewards).through(:user_rewards) }
     it { is_expected.to belong_to(:loyalty_tier) }
-    it { is_expected.to have_one(:leftover_spending) }
+    it { is_expected.to have_one(:leftover_spending).dependent(:destroy) }
   end
 
   describe "validations" do
